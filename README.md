@@ -1,58 +1,233 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎮 GameHub
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+GameHub adalah aplikasi web **marketplace jual-beli game digital** (terinspirasi dari Steam) yang dibangun menggunakan **Laravel 13**. Aplikasi ini memungkinkan pengguna untuk menjelajahi katalog game, membeli game, mengelola wishlist, memberikan review, serta menyediakan panel admin untuk mengelola seluruh data toko.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📋 Daftar Isi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Fitur](#-fitur)
+- [Teknologi yang Digunakan](#-teknologi-yang-digunakan)
+- [Struktur Database](#-struktur-database)
+- [Instalasi & Setup](#-instalasi--setup)
+- [Akun Demo](#-akun-demo)
+- [Struktur Project](#-struktur-project)
+- [Role & Hak Akses](#-role--hak-akses)
+- [Catatan Tambahan](#-catatan-tambahan)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✨ Fitur
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 👤 Sisi Pengguna (Buyer)
+- **Landing Page** — Menampilkan game unggulan, trending games, special offers (diskon aktif), top sellers, dan new releases
+- **Katalog Game** — Pencarian (judul, developer, publisher, kategori), filter berdasarkan kategori, dan sorting (harga, rating, terbaru)
+- **Detail Game** — Informasi lengkap game, system requirements, review pengguna lain, dan game terkait (related games)
+- **Keranjang Belanja (Cart)** — Tambah/hapus game dari keranjang sebelum checkout
+- **Checkout** — Proses pembelian dengan beberapa metode pembayaran, otomatis mengurangi stok dan menambahkan game ke Library
+- **Library** — Daftar game yang sudah dimiliki, lengkap dengan playtime dan tanggal terakhir dimainkan
+- **Wishlist** — Simpan game yang ingin dibeli nanti
+- **Review & Rating** — Beri ulasan dan rekomendasi (like/dislike) untuk game yang sudah dimiliki
+- **Profil Pengguna** — Kelola data akun dan lihat riwayat transaksi
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🛠️ Sisi Admin
+- **Dashboard** — Statistik total pengguna, total game, total transaksi, total pendapatan, grafik penjualan bulanan, top selling games, dan log aktivitas
+- **Manajemen Game** — CRUD (Create, Read, Update, Delete) data game
+- **Manajemen Kategori** — CRUD kategori game
+- **Manajemen Publisher** — CRUD data publisher/penerbit game
+- **Manajemen Diskon** — Buat dan kelola promo diskon per game dengan periode waktu tertentu
+- **Manajemen Pengguna** — Lihat daftar pengguna dan ubah role (admin/buyer)
+- **Log Transaksi** — Lihat seluruh riwayat transaksi yang terjadi di platform
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## 🧰 Teknologi yang Digunakan
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Komponen | Teknologi |
+|---|---|
+| Backend Framework | Laravel 13 (PHP ^8.3) |
+| Templating | Blade |
+| Styling | Tailwind CSS 4 |
+| Build Tool | Vite |
+| Database | Oracle Database (via `yajra/laravel-oci8`) |
+| Autentikasi | Laravel Auth bawaan (session-based) |
 
-```bash
-composer require laravel/boost --dev
+---
 
-php artisan boost:install
+## 🗄️ Struktur Database
+
+Entity utama dalam aplikasi ini:
+
+```
+users ──┬── carts ── cart_items ── games ──┬── categories
+        │                                   ├── publishers
+        ├── libraries ─────────────────────┤
+        ├── wishlists ─────────────────────┤
+        ├── reviews ───────────────────────┤
+        ├── transactions ── transaction_details
+        └── activity_logs
+
+games ── discounts (diskon dengan periode start_date - end_date)
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+**Tabel-tabel utama:**
+- `users` — data pengguna (role: `admin` / `buyer`)
+- `games` — data game (judul, harga, stok, rating, developer, dll)
+- `categories`, `publishers` — kategori dan penerbit game
+- `discounts` — diskon game berdasarkan periode waktu
+- `carts`, `cart_items` — keranjang belanja
+- `transactions`, `transaction_details` — riwayat & rincian transaksi
+- `libraries` — game yang dimiliki user setelah pembelian
+- `wishlists` — daftar keinginan user
+- `reviews` — ulasan & rating dari user terhadap game
+- `activity_logs` — log aktivitas admin (tambah/ubah/hapus data)
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## ⚙️ Instalasi & Setup
 
-## Code of Conduct
+### Prasyarat
+Pastikan sudah terinstall di komputer kamu:
+- PHP >= 8.3
+- Composer
+- Node.js & npm
+- Oracle Database (XE/Express Edition direkomendasikan untuk lokal) yang sudah berjalan dan punya service `XEPDB1`
+- Ekstensi PHP `oci8` aktif (dibutuhkan oleh driver `yajra/laravel-oci8`)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Langkah-langkah
 
-## Security Vulnerabilities
+1. **Clone repository**
+   ```bash
+   git clone <url-repository-ini>
+   cd gamehub
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. **Install dependency PHP**
+   ```bash
+   composer install
+   ```
 
-## License
+3. **Install dependency JavaScript**
+   ```bash
+   npm install
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+4. **Konfigurasi environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+   Lalu sesuaikan kredensial Oracle di `.env` sesuai instalasi Oracle Database kamu:
+   ```dotenv
+   DB_CONNECTION=oracle
+   DB_HOST=127.0.0.1
+   DB_PORT=1521
+   DB_DATABASE=XEPDB1
+   DB_SERVICE_NAME=XEPDB1
+   DB_USERNAME=system
+   DB_PASSWORD=password_oracle_kamu
+   ```
+
+5. **Pastikan Oracle Database sudah running** dan service/PDB (`XEPDB1` atau sesuai konfigurasi kamu) sudah aktif dan bisa diakses.
+
+6. **Jalankan migrasi & seeder**
+   ```bash
+   php artisan migrate --seed
+   ```
+   Perintah ini akan membuat seluruh tabel di Oracle sekaligus mengisi data awal (kategori, publisher, user demo, daftar game, dan diskon).
+
+7. **Build asset frontend**
+   ```bash
+   npm run build
+   ```
+   atau untuk mode development dengan hot-reload:
+   ```bash
+   npm run dev
+   ```
+
+8. **Jalankan server lokal**
+   ```bash
+   php artisan serve
+   ```
+   Aplikasi dapat diakses di `http://localhost:8000`
+
+> 💡 **Tips:** Kamu juga bisa menjalankan semua proses (server, queue, log, vite) sekaligus dengan satu perintah:
+> ```bash
+> composer run dev
+> ```
+
+> ⚠️ **Catatan:** Aplikasi ini menggunakan **Oracle Database** sebagai satu-satunya database yang didukung penuh (lewat package `yajra/laravel-oci8`). Pastikan ekstensi PHP `oci8` sudah aktif dan Oracle Instant Client sudah terpasang di sistem kamu sebelum menjalankan `composer install` / `php artisan migrate`.
+
+---
+
+## 🔑 Akun Demo
+
+Setelah menjalankan `php artisan migrate --seed`, kamu bisa login menggunakan akun berikut:
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@gamehub.com` | `admin123` |
+| Buyer | `demo@gamehub.com` | `demo123` |
+| Buyer | `gamer@gamehub.com` | `gamer123` |
+
+---
+
+## 📁 Struktur Project
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/          → Controller khusus panel admin (CRUD game, kategori, dll)
+│   │   ├── AuthController.php
+│   │   ├── StoreController.php     → Landing, katalog, detail game
+│   │   ├── CartController.php
+│   │   ├── CheckoutController.php
+│   │   ├── LibraryController.php
+│   │   ├── ProfileController.php
+│   │   ├── ReviewController.php
+│   │   └── WishlistController.php
+│   └── Middleware/
+│       ├── AdminMiddleware.php     → Membatasi akses hanya untuk role admin
+│       └── BuyerMiddleware.php     → Membatasi akses hanya untuk role buyer
+├── Models/                  → Eloquent model (Game, User, Transaction, dll)
+database/
+├── migrations/               → Skema database
+├── seeders/                  → Data awal/dummy
+resources/
+├── views/                    → Tampilan Blade
+│   ├── admin/                → Halaman panel admin
+│   ├── auth/                 → Halaman login & register
+│   └── layouts/              → Layout utama
+routes/
+└── web.php                   → Definisi seluruh route aplikasi
+```
+
+---
+
+## 🔐 Role & Hak Akses
+
+Aplikasi ini memiliki dua jenis role pengguna:
+
+| Role | Akses |
+|---|---|
+| **buyer** | Berbelanja, mengelola cart/wishlist/library, memberi review, mengubah profil |
+| **admin** | Seluruh akses buyer + akses penuh ke panel admin (`/admin/*`) untuk mengelola game, kategori, publisher, diskon, pengguna, dan transaksi |
+
+Route admin dilindungi oleh middleware `auth` dan `admin`, sehingga hanya user dengan role `admin` yang bisa mengaksesnya.
+
+---
+
+## 📝 Catatan Tambahan
+
+- **Playtime & Last Played** pada halaman Library bersifat **simulasi/mock** (dihasilkan secara deterministik dari ID game), bukan tracking waktu bermain yang sesungguhnya — fitur ini ditambahkan untuk memperkaya tampilan demo.
+- Review hanya dapat diberikan oleh user yang **sudah memiliki game tersebut** di Library (divalidasi di `ReviewController`).
+- Harga final game (`final_price`) dihitung otomatis berdasarkan diskon yang sedang aktif (jika ada), melalui accessor pada model `Game`.
+- Proses checkout dibungkus dalam database transaction (`DB::transaction`) untuk memastikan konsistensi data antara pengurangan stok, pencatatan transaksi, dan penambahan ke library.
+
+---
+
+## 📄 Lisensi
+
+Project ini dibuat untuk keperluan tugas Basis Data.
