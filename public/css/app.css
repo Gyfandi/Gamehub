@@ -1,0 +1,548 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Design Tokens */
+  --bg-main: #171A21;
+  --bg-card: #1B2838;
+  --bg-darker: #0d121a;
+  --bg-lighter: #2a3f5a;
+  --accent: #66C0F4;
+  --accent-hover: #8dd2f8;
+  --accent-glow: rgba(102, 192, 244, 0.25);
+  --btn-green-start: #75b022;
+  --btn-green-end: #588a1b;
+  --text-main: #d3d5d6;
+  --text-highlight: #ffffff;
+  --text-muted: #8f98a0;
+  --text-blue: #66C0F4;
+  --border-subtle: rgba(102, 192, 244, 0.15);
+  --border-active: rgba(102, 192, 244, 0.4);
+
+  color-scheme: dark;
+}
+
+/* Base resets & typography */
+body {
+  background-color: var(--bg-main);
+  background-image: radial-gradient(circle at top, rgba(27, 40, 56, 0.8) 0%, var(--bg-main) 70%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbars */
+:root {
+  --scrollbar-track: var(--bg-main);
+  --scrollbar-thumb: #3b5066;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-main);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #3b5066;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
+}
+
+/* Custom Headings & Links */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-highlight);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-shadow: 0 0 8px rgba(102, 192, 244, 0.4);
+}
+
+/* Navbar Glassmorphism */
+.navbar-steam {
+  background: rgba(23, 26, 33, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+}
+
+.navbar-steam .navbar-brand {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--text-highlight);
+  text-shadow: 0 0 10px rgba(102, 192, 244, 0.3);
+  letter-spacing: 1px;
+}
+
+.navbar-steam .nav-link {
+  color: var(--text-main);
+  font-weight: 500;
+  margin-right: 0.75rem;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+}
+
+.navbar-steam .nav-link:hover, 
+.navbar-steam .nav-link.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Custom Layout Cards */
+.card-steam {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease;
+  overflow: hidden;
+  height: 100%;
+  color: var(--text-main) !important;
+}
+
+.card-steam .card-title {
+  color: var(--text-highlight) !important;
+}
+
+.card-steam .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.card-steam:hover {
+  transform: translateY(-5px);
+  border-color: var(--border-active);
+  box-shadow: 0 12px 25px rgba(102, 192, 244, 0.15), 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.card-steam .card-body {
+  padding: 1.25rem;
+}
+
+.card-steam-static {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
+}
+
+/* Steam buttons */
+.btn-steam-primary {
+  background: linear-gradient(135deg, #47bfff, #0a88ff);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(10, 136, 255, 0.3);
+}
+
+.btn-steam-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5fc8ff, #1c92ff);
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(10, 136, 255, 0.5);
+  color: #fff;
+}
+
+.btn-steam-success {
+  background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
+  border: none;
+  color: #d2efa9;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  box-shadow: 0 3px 10px rgba(117, 176, 34, 0.2);
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-steam-success:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #8ed629, #6aa621);
+  color: #fff;
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(117, 176, 34, 0.4);
+}
+
+/* btn-sm overrides so all steam buttons are consistent when used small */
+.btn-sm.btn-steam-primary,
+.btn-sm.btn-steam-success,
+.btn-sm.btn-steam-dark {
+  padding: 0.28rem 0.6rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 4px;
+}
+
+/* ── Catalog card action buttons (cart / wish / view) ──────────────────────
+   All three share the same height, font-size, and border-radius so they
+   stay perfectly aligned regardless of whether they contain an icon or text. */
+.btn-catalog {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-width: 32px;
+  padding: 0 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: filter 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+.btn-catalog:hover  { filter: brightness(1.15); transform: scale(1.04); }
+.btn-catalog:active { transform: scale(0.97); }
+
+/* Cart — steam green */
+.btn-catalog-cart {
+  background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
+  color: #d2efa9;
+  text-shadow: 1px 1px 0 rgba(0,0,0,.3);
+  box-shadow: 0 2px 6px rgba(117,176,34,.25);
+}
+
+/* Wishlist — dark with red icon */
+.btn-catalog-wish {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-subtle) !important;
+  color: #e05555;
+}
+.btn-catalog-wish:hover { color: #ff6b6b; }
+
+/* View — steam blue */
+.btn-catalog-view {
+  background: linear-gradient(135deg, #47bfff, #0a88ff);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(10,136,255,.28);
+  padding: 0 14px;
+}
+
+.btn-steam-dark {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-steam-dark:hover {
+  background-color: var(--bg-lighter);
+  border-color: var(--border-active);
+  color: var(--text-highlight);
+}
+
+/* Inputs & Forms */
+.form-control-steam {
+  background-color: var(--bg-darker);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-highlight);
+  border-radius: 4px;
+  padding: 0.6rem 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control-steam:focus {
+  background-color: var(--bg-darker);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+  color: var(--text-highlight);
+  outline: none;
+}
+
+.form-control-steam::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* Badges */
+.badge-steam-category {
+  background-color: rgba(102, 192, 244, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(102, 192, 244, 0.2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  margin-right: 0.25rem;
+}
+
+.badge-steam-price {
+  background-color: var(--bg-darker);
+  border: 1px solid rgba(102, 192, 244, 0.15);
+  color: var(--text-highlight);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.badge-steam-rating {
+  background-color: rgba(117, 176, 34, 0.15);
+  color: #a4d007;
+  border: 1px solid rgba(117, 176, 34, 0.3);
+  font-weight: bold;
+}
+
+/* Main Hero Display */
+.steam-hero-carousel {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.hero-main-img {
+  height: 400px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.hero-info-pane {
+  background-color: var(--bg-card);
+  padding: 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--text-main) !important;
+}
+
+.hero-info-pane h3 {
+  color: var(--text-highlight) !important;
+}
+
+.hero-info-pane .text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Rating Stars rendering */
+.rating-stars {
+  color: #ffc107;
+  font-size: 1.1rem;
+}
+
+.rating-stars-interactive {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.rating-stars-interactive input {
+  display: none;
+}
+
+.rating-stars-interactive label {
+  font-size: 2rem;
+  color: #444;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  padding: 0 0.1rem;
+}
+
+.rating-stars-interactive label:hover,
+.rating-stars-interactive label:hover ~ label,
+.rating-stars-interactive input:checked ~ label {
+  color: #ffc107;
+}
+
+/* Tables */
+.table-steam {
+  color: var(--text-main);
+  border-color: var(--border-subtle);
+}
+
+.table-steam th {
+  background-color: var(--bg-darker);
+  color: var(--text-highlight);
+  border-bottom: 2px solid var(--border-subtle);
+  font-weight: 600;
+}
+
+.table-steam td {
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.table-steam tr:hover td {
+  background-color: var(--bg-lighter);
+}
+
+/* Admin Sidebar Layout */
+.admin-sidebar {
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-subtle);
+  min-height: calc(100vh - 60px);
+  padding: 1.5rem 1rem;
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: var(--text-main);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.admin-nav-link i {
+  margin-right: 0.75rem;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-nav-link:hover,
+.admin-nav-link.active {
+  background-color: rgba(102, 192, 244, 0.1);
+  color: var(--accent);
+  border-left: 3px solid var(--accent);
+  padding-left: calc(1rem - 3px);
+}
+
+.admin-stat-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.admin-stat-card.stat-green {
+  border-left-color: #588a1b;
+}
+
+.admin-stat-card.stat-purple {
+  border-left-color: #8f71ff;
+}
+
+.admin-stat-card.stat-orange {
+  border-left-color: #ff9f43;
+}
+
+.admin-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-highlight);
+  line-height: 1.2;
+}
+
+.admin-stat-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Gallery Slider */
+.steam-gallery-main {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 0.75rem;
+}
+
+.steam-gallery-thumbs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.steam-gallery-thumb {
+  width: 80px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.steam-gallery-thumb:hover,
+.steam-gallery-thumb.active {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+/* Footer styling */
+.footer-steam {
+  background-color: var(--bg-darker);
+  border-top: 1px solid var(--border-subtle);
+  padding: 2.5rem 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 5rem;
+}
+.footer-steam hr {
+  border-color: var(--border-subtle);
+}
+.footer-logo {
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--text-main);
+  letter-spacing: 1px;
+}
+
+/* Utility alignments */
+.text-steam-accent {
+  color: var(--accent) !important;
+}
+
+.text-steam-success {
+  color: #a4d007 !important;
+}
+
+/* Modal styling overrides */
+.modal-content-steam {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-active);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+}
+.modal-header-steam {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.modal-footer-steam {
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Global text muted override */
+.text-muted {
+  color: var(--text-muted) !important;
+}
